@@ -1,0 +1,771 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono);
+
+#gm .app-header {
+    background-color: darkred;
+}
+
+/* .x-toolbar-default { */
+/* border-color: #99BCE8; */
+/* background-image: none; */
+/* background-color: #D3E1F1; */
+/* background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dfe9f5), color-stop(100%, #d3e1f1)); */
+/* background-image: -moz-linear-gradient(top, #dfe9f5,#d3e1f1); */
+/* background-image: linear-gradient(top, #dfe9f5,#d3e1f1); */
+/* } */
+#gm a:link {
+    text-decoration: none;
+    color: #15428B;
+}
+
+#gm a:visited {
+    text-decoration: none;
+    color: #15428B;
+}
+
+#gm a:active {
+    text-decoration: none;
+    color: #15428B;
+}
+
+#gm a:hover {
+    text-decoration: underline;
+    color: #15428B;
+}
+
+#gm .u {
+    text-decoration: underline;
+}
+
+#gm .background-black {
+    background: #000000;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.bio-hiddenbar {
+    background: transparent;
+    border: 0px;
+}
+
+.bio-border-false {
+    border: 0px;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.bio-userbar {
+    background: #e0e0e0;
+    border-top: 1px solid #c5c5c5;
+    border-bottom: 1px solid #c5c5c5;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.bio-linkbar {
+    background-image: none;
+    background: white;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    border-left: 0px solid white;
+    border-right: 0px solid white;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.bio-menubar {
+    background: white;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.bio-toolbar {
+    background: whiteSmoke;
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+    border-left: 1px solid whiteSmoke;
+    border-right: 1px solid whiteSmoke;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.bio-botbar {
+    background: whiteSmoke;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.bio-toolbar-bot {
+    background: whiteSmoke;
+    border-top: 0px;
+    border-bottom: 1px solid #E5E5E5;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+#gm .appName {
+    text-decoration: none;
+    color: #596F8F;
+    font-size: 20px;
+    text-shadow: 0 1px 0 white;
+}
+
+#gm .appDesc {
+    text-decoration: none;
+    color: #596F8F;
+    font-size: 1.3em;
+    text-shadow: 0 1px 0 white;
+}
+
+#gm .top-links {
+    text-decoration: none;
+    color: #596F8F;
+    font-size: 14px;
+    text-align: right;
+    margin: 5px 10px 0 0;
+}
+
+#gm .top-links:hover {
+    text-decoration: none;
+    color: #596F8F;
+}
+
+#gm .top-links:visited {
+    text-decoration: none;
+    color: #596F8F;
+}
+
+#gm .file {
+    color: blue;
+    background-color: AliceBlue;
+    padding: 0 3px 0 3px;
+    text-decoration: underline;
+}
+
+#gm .message {
+    color: green;
+    background-color: honeydew;
+    padding: 0 3px 0 3px;
+}
+
+#gm .group {
+    background-color: LightCyan;
+    padding: 5px;
+}
+
+#gm .groups {
+    background-color: bisque;
+    padding: 5px;
+}
+
+#gm .none {
+    text-decoration: none;
+}
+
+#gm .whiteborder {
+    border: 1px solid #ffffff;
+}
+
+#gm .greyborder {
+    border: 1px solid #BBBBBB;
+}
+
+#gm .encima {
+    cursor: pointer;
+    border-color: deepSkyBlue;
+    background: honeydew;
+}
+
+#gm .encima2 {
+    cursor: pointer;
+    border-color: lightgray;
+    background: whitesmoke;
+}
+
+#gm .outputItem {
+    display: inline-block;
+}
+
+#gm .inlineblock {
+    display: inline-block;
+}
+
+#gm .tools-icons {
+    background: url('../img/tools-sprites-trans.gif');
+    width: 15px;
+    height: 15px;
+}
+
+#gm .icon-save {
+    background: url('../img/save.png');
+}
+
+#gm .icon-grid {
+    background: url('../img/grid.png');
+}
+
+#gm .icon-box {
+    background: url(../img/icons.png) no-repeat -3px -57px !important;
+}
+
+#gm .icon-blue-box {
+    background: url(../img/icons.png) no-repeat -3px -84px !important;
+}
+
+#gm .icon-change-project {
+    background: url(../img/jfk_sprite22.png) no-repeat -3px -1922px !important;
+}
+
+#gm .icon-rename-project {
+    background: url(../img/jfk_sprite40.png) no-repeat -24px -2344px !important;
+}
+
+#gm .icon-add {
+    background: url(../img/jfk_sprite22.png) no-repeat -3px -844px !important;
+}
+
+#gm .icon-link {
+    background: url(../img/jfk_sprite22.png) no-repeat -3px -759px !important;
+}
+
+#gm .icon-delete {
+    background: url(../img/sprite_black2.png) no-repeat -65px -45px !important;
+}
+
+#gm .icon-drag {
+    background: url(../img/jfk_sprite22.png) no-repeat -3px -737px !important;
+}
+
+#gm .icon-select {
+    background: url(../img/jfk_sprite22.png) no-repeat -3px -1964px !important;
+}
+
+#gm .icon-zoom-out {
+    background: url(../img/jfk_sprite22.png) no-repeat -3px -2787px !important;
+}
+
+#gm .icon-zoom-in {
+    background: url(../img/jfk_sprite22.png) no-repeat -3px -2850px !important;
+}
+
+#gm .icon-upload {
+    background: url(../img/jfk_sprite22.png) no-repeat -3px -2048px !important;
+}
+
+#gm .icon-local {
+    background: url(../img/local.png);
+}
+
+#gm .icon-node-size {
+    background: url(../img/resize.png);
+}
+
+#gm .icon-fill-color {
+    background: url(../img/jfk_sprite40.png) no-repeat -24px -1545px !important;
+}
+
+#gm .icon-stroke-size {
+    background: url(../img/jfk_sprite40.png) no-repeat -24px -128px !important;
+}
+
+#gm .icon-stroke-color {
+    background: url(../img/jfk_sprite40.png) no-repeat -24px -2226px !important;
+}
+
+#gm .icon-node-shape {
+    background: url(../img/jfk_sprite40.png) no-repeat -1px -1565px !important;
+}
+
+#gm .icon-background-option {
+    background: url(../img/icon-background.png);
+}
+
+#gm .icon-node-opacity {
+    background: url(../img/opacity.png);
+}
+
+#gm .icon-edge-type {
+    background: url(../img/edgetype.png);
+}
+
+/*Edited by OICR - added prefix #gm to resolve conflict with bootstrap*/
+#gm .icon-find {
+    background: url(../img/find.png);
+}
+
+#gm .icon-label-size {
+    background: url(../img/label-size.png);
+}
+
+#gm .icon-layout {
+    background: url(../img/icon-layout.png);
+}
+
+#gm .icon-collapse {
+    background: url(../img/icon-collapse.png);
+}
+
+#gm .icon-auto-select {
+    background: url(../img/icon-auto-select.png);
+}
+
+#gm .icon-project-delete {
+    background: url(../img/icon-project-delete.png);
+}
+
+#gm .icon-project-all {
+    background: url(../img/icon-project-all.png);
+}
+
+#gm .icon-project-manager {
+    background: url(../img/jfk_sprite40.png) no-repeat -1px -896px !important;
+}
+
+#gm .icon-mouse-select {
+    background: url(../img/jfk_sprite40.png) no-repeat -2px -1504px !important;
+}
+
+#gm .icon-order {
+    background: url(../img/icon-order.png);
+}
+
+#gm .icon-order-asc {
+    background: url(../img/icon-order-asc.png);
+}
+
+#gm .icon-order-desc {
+    background: url(../img/icon-order-desc.png);
+}
+
+#gm .icon-regular-file {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB90CDRIvNbHTpbwAAADjSURBVDjLpZFBbsIwEEUfVRZYahcVK3qKXoauMFK5C91nkyUB+xC5BqeAA7SKq1B5ugl2EiC04UkjayzN17NnROTRWvvJFbTWL8CBHqbGWOlSlqVkWSbGWAGm3aGHZiMiAByPP6FOd1rP2W7NvhvSCvDe10E+VJPFQpPnm1ZIcsmgPgJVVZGmaejX63y/XL4/AV/JJYPTCeDcN7PZWyuwKAqA8wARqSsGKDVGqXGjV8H07AnRQPq21TK8+YSBAQMN4hb6Df7wB/5eA+4zmEyehxk451itPrhFksSxUeP+lf+z+wXwdayJk/mqtgAAAABJRU5ErkJggg==);
+}
+
+/*SBGN icons*/
+#gm .icon-sbgn-en1 {
+    background: url(../img/sbgn.png) no-repeat -0px -0px !important;
+}
+
+#gm .icon-sbgn-en2 {
+    background: url(../img/sbgn.png) no-repeat -17px -0px !important;
+}
+
+#gm .icon-sbgn-en3 {
+    background: url(../img/sbgn.png) no-repeat -34px -0px !important;
+}
+
+#gm .icon-sbgn-en4 {
+    background: url(../img/sbgn.png) no-repeat -51px -0px !important;
+}
+
+#gm .icon-sbgn-en5 {
+    background: url(../img/sbgn.png) no-repeat -68px -0px !important;
+}
+
+#gm .icon-sbgn-en6 {
+    background: url(../img/sbgn.png) no-repeat -85px -0px !important;
+}
+
+#gm .icon-sbgn-pn1 {
+    background: url(../img/sbgn.png) no-repeat -0px -17px !important;
+}
+
+#gm .icon-sbgn-pn2 {
+    background: url(../img/sbgn.png) no-repeat -17px -17px !important;
+}
+
+#gm .icon-sbgn-pn3 {
+    background: url(../img/sbgn.png) no-repeat -34px -17px !important;
+}
+
+#gm .icon-sbgn-pn4 {
+    background: url(../img/sbgn.png) no-repeat -51px -17px !important;
+}
+
+#gm .icon-sbgn-pn5 {
+    background: url(../img/sbgn.png) no-repeat -68px -17px !important;
+}
+
+#gm .icon-sbgn-pn6 {
+    background: url(../img/sbgn.png) no-repeat -85px -17px !important;
+}
+
+#gm .icon-sbgn-ca1 {
+    background: url(../img/sbgn.png) no-repeat -0px -34px !important;
+}
+
+#gm .icon-sbgn-ca2 {
+    background: url(../img/sbgn.png) no-repeat -17px -34px !important;
+}
+
+#gm .icon-sbgn-ca3 {
+    background: url(../img/sbgn.png) no-repeat -34px -34px !important;
+}
+
+#gm .icon-sbgn-ca4 {
+    background: url(../img/sbgn.png) no-repeat -51px -34px !important;
+}
+
+#gm .icon-sbgn-ca5 {
+    background: url(../img/sbgn.png) no-repeat -68px -34px !important;
+}
+
+#gm .icon-sbgn-ca6 {
+    background: url(../img/sbgn.png) no-repeat -85px -34px !important;
+}
+
+#gm .icon-sbgn-ca7 {
+    background: url(../img/sbgn.png) no-repeat -102px -34px !important;
+}
+
+#gm .img-sbgn-logo {
+    background: url(../img/sbgn-logo.png) no-repeat;
+}
+
+#gm .dedo {
+    cursor: pointer;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.list-item {
+    margin-top: 1px;
+    padding-left: 20px;
+    font-size: 11px;
+    line-height: 20px;
+    cursor: pointer;
+    background: url(../img/icons.png) no-repeat -3px -296px;
+    border: 1px solid #fff;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.joblist-item {
+    border: 1px solid #fff;
+    margin-top: 1px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.chromosome-item {
+    border: 1px solid #fff;
+    padding: 4px;
+    cursor: pointer;
+    min-width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+/*Edited by OICR - removed #gm prefix*/
+.list .x-item-selected {
+    font-weight: bold;
+    color: #15428B;
+    border: 1px solid deepSkyBlue;
+    background-color: #DFE8F6;
+}
+
+.list-item-hover {
+    border: 1px solid deepSkyBlue;
+    background-color: honeydew;
+}
+
+/*TEXT FORMAT*/
+#gm .emph {
+    font-weight: bold;
+    /*     color: #15428B; */
+}
+
+#gm .ssel {
+    font-weight: bold;
+    color: #15428B;
+}
+
+#gm .dis {
+    font-style: italic;
+    font-weight: bold;
+    color: gray;
+}
+
+#gm .tip {
+    font-style: italic;
+    color: gray;
+}
+
+#gm .key {
+    color: #444444;
+}
+
+#gm .ok {
+    color: #00AA33;
+    font-weight: bold;
+}
+
+#gm .err {
+    color: #CC0011;
+    font-weight: bold;
+}
+
+#gm .info {
+    color: #0066FF;
+	padding-right:5px;
+    font-weight: bold;
+}
+
+#gm .link {
+    color: #1155cc;
+}
+
+#gm .bgama {
+    color: #ffffd6;
+}
+
+#gm .w75 {
+    display: inline-block;
+    width: 75px;
+}
+
+#gm .w90 {
+    display: inline-block;
+    width: 90px;
+}
+
+#gm .w100 {
+    display: inline-block;
+    width: 100px;
+}
+
+#gm .w125 {
+    display: inline-block;
+    width: 125px;
+}
+
+#gm .w150 {
+    display: inline-block;
+    width: 150px;
+}
+
+#gm .w140 {
+    display: inline-block;
+    width: 140px;
+}
+
+#gm .s10 {
+    font-size: 10%;
+}
+
+#gm .s20 {
+    font-size: 20%;
+}
+
+#gm .s30 {
+    font-size: 30%;
+}
+
+#gm .s40 {
+    font-size: 40%;
+}
+
+#gm .s50 {
+    font-size: 50%;
+}
+
+#gm .s60 {
+    font-size: 60%;
+}
+
+#gm .s70 {
+    font-size: 70%;
+}
+
+#gm .s80 {
+    font-size: 80%;
+}
+
+#gm .s90 {
+    font-size: 90%;
+}
+
+#gm .s100 {
+    font-size: 100%;
+}
+
+#gm .s110 {
+    font-size: 110%;
+}
+
+#gm .s120 {
+    font-size: 120%;
+}
+
+#gm .s130 {
+    font-size: 130%;
+}
+
+#gm .s140 {
+    font-size: 140%;
+}
+
+#gm .s150 {
+    font-size: 150%;
+}
+
+#gm .s160 {
+    font-size: 160%;
+}
+
+#gm .s170 {
+    font-size: 170%;
+}
+
+#gm .s180 {
+    font-size: 180%;
+}
+
+#gm .s190 {
+    font-size: 190%;
+}
+
+#gm .s200 {
+    font-size: 200%;
+}
+
+/*END TEXT FORMAT*/
+
+.panel-border-top {
+    border-top: 1px solid #99bce8;
+}
+
+.panel-border-left {
+    border-left: 1px solid #99bce8;
+}
+
+.panel-border-bottom {
+   border-bottom: 1px solid #99bce8;
+}
+
+.panel-border-right {
+    border-right: 1px solid #99bce8;
+}
+
+.panel-border {
+    border: 1px solid #bbb;
+}
+
+.border-bot {
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.border-top {
+    border-top: 1px solid #E5E5E5;
+}
+
+.border-left {
+    border-left: 1px solid #E5E5E5;
+}
+
+.border-right {
+    border-right: 1px solid #E5E5E5;
+}
+
+.border-all {
+    border: 1px solid #E5E5E5;
+}
+
+#gm .msg {
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    background: #F6BC5D;
+    border: 1px solid #F6BC5D;
+    /*     margin-top: 2px; */
+    padding: 3px;
+    color: #222;
+}
+
+/********************/
+/***sencha ux styles***/
+/********************/
+
+/*mensaje flotante*/
+#gm #msg-div {
+    position: absolute;
+    left: 40%;
+    top: 10px;
+    /*     width:300px; */
+    z-index: 20000;
+}
+
+#gm #msg-div .msg {
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    background: #F6BC5D;
+    border: 2px solid #F6BC5D;
+    margin-top: 2px;
+    padding: 10px 25px;
+    color: #222;
+}
+
+#gm #msg-div .msg h3 {
+    margin: 0 0 4px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/**/
+
+/*GridFilters Styles*/
+#gm .ux-filtered-column {
+    font-style: italic;
+    font-weight: bold;
+}
+
+#gm .ux-gridfilter-text-icon {
+    background-image: url(../img/find.png) !important;
+}
+
+/*RangeMenu Styles*/
+#gm .ux-rangemenu-icon {
+    margin-top: 0;
+}
+
+#gm .ux-rangemenu-gt {
+    background-image: url(../img/greater_than.png) !important;
+}
+
+#gm .ux-rangemenu-lt {
+    background-image: url(../img/less_than.png) !important;
+}
+
+#gm .ux-rangemenu-eq {
+    background-image: url(../img/equals.png) !important;
+}
+
+/********************/
+/***Sencha rewrite***/
+/********************/
+#gm .x-toolbar .x-toolbar-separator-horizontal {
+    border-left-color: #bbb;
+}
+
+/********************/
+/***OICR rewrite*****/
+/********************/
+/*Edited by OICR - to fix 'Search by external reference' textarea*/
+#gm textarea{
+	min-height:26px;
+	border-radius:0px;
+}
+
+/*Edited by OICR - to fix 'Result type' textfield*/
+#gm input[type="text"]{
+    border-radius:0px;
+	padding:0px 2px;
+}
+
+.x-boundlist-list-ct ul{
+	text-decoration:none;
+	list-style-type:none;
+	padding:0px;
+	margin:0px;
+}
+
