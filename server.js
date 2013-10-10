@@ -57,50 +57,110 @@ app.get('/api/stats/region/:id', function(req, res){
   res.send({});
 });
 
-app.get('/api/features/:id', function(req, res){
+function calculateBoxSize(interval) {
+  var scale = Math.round(3 * (Math.log(interval) / Math.LN10));
+  var digits = Math.floor(scale / 3);
+  var remainder = scale - 3 * digits;
+  return Math.pow(10, digits) * ((remainder == 2) ? 5 : (remainder == 1) ? 2 : 1);
+}
+
+app.get('/api/browser/gene', function(req, res){
+
+  var segment = req.query['segment'];
+  var segmentRegex = /^(\w+):(\d+)-(\d+)$/;
+  var segmentMatch = segmentRegex.exec(segment);
+
   MongoClient.connect("mongodb://localhost:27017/capsid", function (err, db) {
-    db.collection("mapped", function(err, mapped) {
-      var start = parseInt(req.query["start"])
-      var end = parseInt(req.query["end"]);
-      var query = {sample: "s1", genome: 302309598, refStart: {'$lte' : end}, refEnd: {'$gte' : start}};
-      var cursor = mapped.find(query).toArray(function(err, docs) {
-        db.close();
-        res.send({features: docs.map(function(val) {
-          return {start: val.refStart, end: val.refEnd, strand: val.refStrand, uniqueID: val['_id'].toString()};
-        })});
-      })
-    })
+
+    if (err) return console.log(err);
+
+    if (req.query['histogram'] == 'true') {
+      var interval = calculateBoxSize(parseInt(req.query['interval']));
+      var start = parseInt(segmentMatch[2]);
+      var end = parseInt(segmentMatch[3]);
+      var histogramCount = Math.ceil((end - start) / interval);
+
+      db.collection("feature", function(err, feature) {
+        var query = {genome: 302309598, type : "gene", start: {'$lte' : end}, end: {'$gte' : start}};
+        var cursor = feature.find(query).toArray(function(err, docs) {
+          var data = Array.apply(null, new Array(histogramCount)).map(Number.prototype.valueOf,0);
+          docs.forEach(function(doc) {
+            var box = Math.floor((doc.start - start) / interval);
+            data[box]++;
+          });
+          var maximum = Math.max.apply(Math, data);
+          var result = data.map(function(count, i) {
+            return {start: (start += interval), end: start, interval: 0, absolute: count, value: count / maximum};
+          });
+          res.send(result);
+        });
+      });
+
+    } else {
+      db.collection("feature", function(err, feature) {
+        var start = parseInt(segmentMatch[2]);
+        var end = parseInt(segmentMatch[3]);
+        var query = {genome: 302309598, type : "gene", start: {'$lte' : end}, end: {'$gte' : start}};
+        var cursor = feature.find(query).toArray(function(err, docs) {
+          db.close();
+          res.send({data: docs});
+        })
+      });
+
+    }
   });
 });
 
-app.get('/api/densities/:id', function(req, res){
+app.get('/api/browser/feature', function(req, res){
 
-  var basesPerBin = parseInt(req.query['basesPerBin']);
-  var start = parseInt(req.query['start']);
-  var end = parseInt(req.query['end']);
+  var segment = req.query['segment'];
+  var segmentRegex = /^(\w+):(\d+)-(\d+)$/;
+  var segmentMatch = segmentRegex.exec(segment);
 
   MongoClient.connect("mongodb://localhost:27017/capsid", function (err, db) {
-    db.collection("mapped", function(err, mapped) {
-      var start = parseInt(req.query["start"])
-      var end = parseInt(req.query["end"]);
-      var query = {sample: "s1", genome: 302309598, refStart: {'$lte' : end}, refEnd: {'$gte' : start}};
-      var cursor = mapped.find(query).toArray(function(err, docs) {
-        db.close();
 
-        // http://stackoverflow.com/questions/1295584/most-efficient-way-to-create-a-zero-filled-javascript-array
-        var bins = Array.apply(null, Array(Math.ceil((end - start + 1)/basesPerBin))).map(Number.prototype.valueOf, 0);
-        docs.forEach(function(val) {
-          var thisStartBin = Math.floor((val.refStart - start)/basesPerBin);
-          var thisEndBin = Math.floor((val.refEnd - start)/basesPerBin);
-          for(var i = Math.max(0,thisStartBin); i <= thisEndBin; i++) {
-            bins[i]++;
-          }
+    if (err) return console.log(err);
+
+    if (req.query['histogram'] == 'true') {
+      var interval = calculateBoxSize(parseInt(req.query['interval']));
+      var start = parseInt(segmentMatch[2]);
+      var end = parseInt(segmentMatch[3]);
+      var histogramCount = Math.ceil((end - start) / interval);
+
+      db.collection("mapped", function(err, mapped) {
+        var query = {genome: 302309598, refStart: {'$lte' : end}, refEnd: {'$gte' : start}};
+        var cursor = mapped.find(query).toArray(function(err, docs) {
+          var data = Array.apply(null, new Array(histogramCount)).map(Number.prototype.valueOf,0);
+          docs.forEach(function(doc) {
+            var box = Math.floor((doc.refStart - start) / interval);
+            data[box]++;
+          });
+          var maximum = Math.max.apply(Math, data);
+          var result = data.map(function(count, i) {
+            return {start: (start += interval), end: start, interval: 0, absolute: count, value: count / maximum};
+          });
+          res.send(result);
         });
-        var max = Math.max.apply(null, bins);
-        res.send({bins: bins, stats: {basesPerBin: basesPerBin, max: max}});
-      })
-    });
+      });
+
+    } else {
+
+      db.collection("mapped", function(err, mapped) {
+        var start = parseInt(segmentMatch[2]);
+        var end = parseInt(segmentMatch[3]);
+        var query = {genome: 302309598, refStart: {'$lte' : end}, refEnd: {'$gte' : start}};
+        var cursor = mapped.find(query).toArray(function(err, docs) {
+          db.close();
+          res.send({data: docs.map(function(doc) {
+            return {start: doc.refStart, end: doc.refEnd, strand: doc.refStrand, id: doc.readId};
+          })});
+        })
+      });
+
+    }
+
   });
+
 });
 
 if(!process.argv[2] || !process.argv[2].indexOf("expresso")) {

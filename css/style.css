@@ -769,3 +769,17 @@
 	margin:0px;
 }
 
+.capsid-feature {
+    fill: #AA0000;
+    cursor: pointer;
+}
+
+.capsid-feature-label {
+    font-weight: 400;
+    font-size: 1.4ex;
+    cursor: pointer;
+}
+
+.capsid-feature-read {
+    fill: #888888;   
+}

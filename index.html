@@ -8,18 +8,23 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen">
 	<link rel="stylesheet" type="text/css" href="css/slider.css"></link>
 	<link rel="stylesheet" type="text/css" href="css/style.css"></link>
-	<link rel="stylesheet" type="text/css" href="css/jquery.qtip.min.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/jquery.qtip.css"></link>
 
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap-slider.js"></script>
+	<script type="text/javascript" src="js/jquery.qtip.js"></script>
 
 	<script type="text/javascript" src="js/underscore-min.js"></script>
 	<script type="text/javascript" src="js/backbone-min.js"></script>
 	<script type="text/javascript" src="js/genome-viewer-1.0.2.js"></script>
-	<script type="text/javascript" src="js/icgc-navigation-bar.js"></script>
-	<script type="text/javascript" src="js/icgc-gene-track.js"></script>
-	<script type="text/javascript" src="js/icgc-gene-adapter.js"></script>
+	<script type="text/javascript" src="js/capsid-navigation-bar.js"></script>
+	<script type="text/javascript" src="js/capsid-gene-track.js"></script>
+	<script type="text/javascript" src="js/capsid-gene-adapter.js"></script>
+	<script type="text/javascript" src="js/capsid-gene-renderer.js"></script>
+	<script type="text/javascript" src="js/capsid-feature-track.js"></script>
+	<script type="text/javascript" src="js/capsid-feature-adapter.js"></script>
+	<script type="text/javascript" src="js/capsid-feature-renderer.js"></script>
 
 </head>
 
@@ -31,9 +36,11 @@
 	    <button class="btn btn-small">Region Overview</button>
 	</span>
 
-	<button id="zoomOutButton" class="btn btn-small"><i class="icon-minus-sign"></i></button>
+<!-- 	<button id="zoomOutButton" class="btn btn-small"><i class="icon-minus-sign"></i></button>
 	<div id="slider" style="width:100px" ></div>
 	<button id="zoomInButton" class="btn btn-small"><i class="icon-plus-sign"></i></button>
+ -->
+	<div id="navigationBar"></div>
 
 	<div id="gm">
 		<div id="gv-application"></div>
@@ -142,6 +149,14 @@
 	        infoWidgetId: "id",
 	        height: 4,
 	        histogramColor: "lightblue"
+	    },
+	    feature: {
+	        label: function (f, zoom) {
+	        	return f.id;
+	        },
+	    	infoWidgetId: "id",
+	        height: 4,
+	        histogramColor: "green"
 	    }
 	}
 
@@ -160,11 +175,12 @@
 	    drawNavigationBar: false,
 	    drawChromosomePanel: false,
 	    drawKaryotypePanel: false,
-	    drawRegionOverviewPanel: false,
+	    drawRegionOverviewPanel: true,
 	    version: ''
 	});
 
-	var navigationBar = new IcgcNavigationBar({
+	var navigationBar = new CapsidNavigationBar({
+	  targetId: "navigationBar",
       handlers: {
         'region:change': function(event) {
           Utils.setMinRegion(event.region, genomeViewer.getSVGCanvasWidth());
@@ -183,28 +199,31 @@
 	
 	// mutationGenomeViewer.setRegionOverviewPanelVisible(false);
 
-    tracks.icgcGeneTrack = new IcgcGeneTrack({
+    tracks.capsidGeneTrack = new CapsidGeneTrack({
       targetId: null,
       id: 2,
       title: 'Genes',
-      histogramZoom: 20,
-      transcriptZoom: 40,
-      height: 260,
+      histogramZoom: 50,
+      labelZoom: 55,
+      height: 300,
       visibleRange: {start: 0, end: 100},
       featureTypes: FEATURE_TYPES,
 
-      renderer: new GeneRenderer({
-        handlers: {
-          'feature:click': function (e) {
-            var path = '/genes/' + e.feature[e.featureType === 'gene' ? 'id' : 'geneId'];
-            scope.$apply(function () {
-              $location.path(path).search({});
-            });
-          }
-        }
+      renderer: new CapsidGeneRenderer({
+      	label: function(f) {
+      	  return f.name;
+      	},
+      	tooltipText: function(f) {
+
+          return 'gene:&nbsp;<span class="ssel">' + f.name + '</span><br>' +
+            'start-end:&nbsp;<span class="emph">' + f.start + '-' + f.end + '</span><br>' + 
+            'strand:&nbsp;<span class="ssel">' + (f.strand == 1 ? "sense (positive)" : "antisense (negative)") + '</span><br>';
+        },
+            
+      	height: 8
       }),
 
-      dataAdapter: new IcgcGeneAdapter({
+      dataAdapter: new CapsidGeneAdapter({
         category: 'genomic',
         subCategory: 'region',
         resource: 'gene',
@@ -214,15 +233,53 @@
           chunkSize: 10000
         },
         filters: {},
-        options: {
-          histogramThreshold: 20 * 1000 * 1000,
-          transcriptThreshold: 10 * 1000 * 1000
-        },
         featureConfig: FEATURE_CONFIG.gene
       })
     });
 
-    genomeViewer.addTrack(tracks.icgcGeneTrack);
+    genomeViewer.addTrack(tracks.capsidGeneTrack);
+
+    this.capsidFeatureTrack = new CapsidFeatureTrack({
+    	targetId: null,
+    	id: 3,
+    	title: 'Capsid Features',
+    	histogramZoom: 75,
+    	labelZoom: 85,
+    	height: 240,
+    	visibleRange: {start: 0, end: 100},
+        featureTypes: FEATURE_TYPES,
+
+    	renderer: new CapsidFeatureRenderer({
+    		label: function(f) {
+    			return f.id;
+    		},
+    		height: 6,
+	      	tooltipText: function(f) {
+
+	          return 'start-end:&nbsp;<span class="emph">' + f.start + '-' + f.end + '</span><br>' + 
+	            'strand:&nbsp;<span class="ssel">' + (f.strand == 1 ? "sense (positive)" : "antisense (negative)") + '</span><br>';
+	        },
+    		blockClass: 'capsid-feature capsid-feature-read'
+		}),
+
+		dataAdapter: new CapsidFeatureAdapter({
+			category: 'genomic',
+			subCategory: 'region',
+			resource: 'feature',
+			params: {
+				exclude: 'transcriptVariations,xrefs,samples'
+			},
+			species: genomeViewer.species,
+			featureCache: {
+				gzip: true,
+				chunkSize: 10000
+			},
+			filters: {},
+			featureConfig: FEATURE_CONFIG.feature
+		})
+	});
+
+	genomeViewer.addTrack(this.capsidFeatureTrack);
 
 	</script>
 </body>
