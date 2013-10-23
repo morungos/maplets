@@ -48,119 +48,12 @@ app.configure(function(){
   // verify the existence of req.user for routes that we need authenticated. 
 });
 
-app.get('/api/stats/global', function(req, res){
-  res.send({featureDensity: 0.02, featureCount: 10000});
-});
+app.get('/favicon.ico', function(req, res) {
+  res.send(404, "Not Found");
+})
 
-app.get('/api/stats/region/:id', function(req, res){
-  console.log("Request for region statistics", req.params);
-  res.send({});
-});
-
-function calculateBoxSize(interval) {
-  var scale = Math.round(3 * (Math.log(interval) / Math.LN10));
-  var digits = Math.floor(scale / 3);
-  var remainder = scale - 3 * digits;
-  return Math.pow(10, digits) * ((remainder == 2) ? 5 : (remainder == 1) ? 2 : 1);
-}
-
-app.get('/api/browser/gene', function(req, res){
-
-  var segment = req.query['segment'];
-  var segmentRegex = /^(\w+):(\d+)-(\d+)$/;
-  var segmentMatch = segmentRegex.exec(segment);
-
-  MongoClient.connect("mongodb://localhost:27017/capsid", function (err, db) {
-
-    if (err) return console.log(err);
-
-    if (req.query['histogram'] == 'true') {
-      var interval = calculateBoxSize(parseInt(req.query['interval']));
-      var start = parseInt(segmentMatch[2]);
-      var end = parseInt(segmentMatch[3]);
-      var histogramCount = Math.ceil((end - start) / interval);
-
-      db.collection("feature", function(err, feature) {
-        var query = {genome: 302309598, type : "gene", start: {'$lte' : end}, end: {'$gte' : start}};
-        var cursor = feature.find(query).toArray(function(err, docs) {
-          var data = Array.apply(null, new Array(histogramCount)).map(Number.prototype.valueOf,0);
-          docs.forEach(function(doc) {
-            var box = Math.floor((doc.start - start) / interval);
-            data[box]++;
-          });
-          var maximum = Math.max.apply(Math, data);
-          var result = data.map(function(count, i) {
-            return {start: (start += interval), end: start, interval: 0, absolute: count, value: count / maximum};
-          });
-          res.send(result);
-        });
-      });
-
-    } else {
-      db.collection("feature", function(err, feature) {
-        var start = parseInt(segmentMatch[2]);
-        var end = parseInt(segmentMatch[3]);
-        var query = {genome: 302309598, type : "gene", start: {'$lte' : end}, end: {'$gte' : start}};
-        var cursor = feature.find(query).toArray(function(err, docs) {
-          db.close();
-          res.send({data: docs});
-        })
-      });
-
-    }
-  });
-});
-
-app.get('/api/browser/feature', function(req, res){
-
-  var segment = req.query['segment'];
-  var segmentRegex = /^(\w+):(\d+)-(\d+)$/;
-  var segmentMatch = segmentRegex.exec(segment);
-
-  MongoClient.connect("mongodb://localhost:27017/capsid", function (err, db) {
-
-    if (err) return console.log(err);
-
-    if (req.query['histogram'] == 'true') {
-      var interval = calculateBoxSize(parseInt(req.query['interval']));
-      var start = parseInt(segmentMatch[2]);
-      var end = parseInt(segmentMatch[3]);
-      var histogramCount = Math.ceil((end - start) / interval);
-
-      db.collection("mapped", function(err, mapped) {
-        var query = {genome: 302309598, refStart: {'$lte' : end}, refEnd: {'$gte' : start}};
-        var cursor = mapped.find(query).toArray(function(err, docs) {
-          var data = Array.apply(null, new Array(histogramCount)).map(Number.prototype.valueOf,0);
-          docs.forEach(function(doc) {
-            var box = Math.floor((doc.refStart - start) / interval);
-            data[box]++;
-          });
-          var maximum = Math.max.apply(Math, data);
-          var result = data.map(function(count, i) {
-            return {start: (start += interval), end: start, interval: 0, absolute: count, value: count / maximum};
-          });
-          res.send(result);
-        });
-      });
-
-    } else {
-
-      db.collection("mapped", function(err, mapped) {
-        var start = parseInt(segmentMatch[2]);
-        var end = parseInt(segmentMatch[3]);
-        var query = {genome: 302309598, refStart: {'$lte' : end}, refEnd: {'$gte' : start}};
-        var cursor = mapped.find(query).toArray(function(err, docs) {
-          db.close();
-          res.send({data: docs.map(function(doc) {
-            return {start: doc.refStart, end: doc.refEnd, strand: doc.refStrand, id: doc.readId};
-          })});
-        })
-      });
-
-    }
-
-  });
-
+app.get('/*', function(req, res){
+  res.sendfile(__dirname + req.url);
 });
 
 if(!process.argv[2] || !process.argv[2].indexOf("expresso")) {
