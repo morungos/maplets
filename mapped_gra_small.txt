@@ -1,0 +1,14 @@
+level	index	parent	id	name	score
+SPECIES	1	197911	11320	Influenza A virus	0.637035094378073
+SPECIES	2	333750	337042	Alphapapillomavirus 7	0.356827217813147
+SPECIES	3	10294	10298	Human herpesvirus 1	0.00613768780877988
+GENUS	1	11308	197911	Influenzavirus A	0.637035094378073
+GENUS	2	151340	333750	Alphapapillomavirus	0.356827217813147
+GENUS	3	10292	10294	Simplexvirus	0.00613768780877988
+FAMILY	1		11308	Orthomyxoviridae	0.637035094378073
+FAMILY	2		151340	Papillomaviridae	0.356827217813147
+FAMILY	3	548681	10292	Herpesviridae	0.00613768780877988
+ORDER	1		548681	Herpesvirales	0.00613768780877988
+SEQUENCE	1	11320	335341	Influenza A virus (A/New York/392/2004(H3N2))	0.637035094378073	                   1	                 100	                1467	 6.82	     100.0	>gi|73919135|ref|NC_007368.1|Influenza A virus (A/New York/392/2004(H3N2)) segment 6, complete sequence.
+SEQUENCE	2	337042	337042	Alphapapillomavirus 7	0.356827217813147	                   3	                 230	                7857	 2.93	     230.0	>gi|9626069|ref|NC_001357.1|Human papillomavirus - 18, complete genome.
+SEQUENCE	3	10298	10298	Human herpesvirus 1	0.00613768780877988	                   1	                 100	              152261	 0.07	     100.0	>gi|9629378|ref|NC_001806.1|Human herpesvirus 1, complete genome.
