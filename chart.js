@@ -55,6 +55,7 @@ var arc = d3.svg.arc()
     .innerRadius(function(d) { return Math.max(0, d.y ? y(d.y) : d.y); })
     .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
+var scale = d3.scale.category10();
 
 function generateSunburst() {
 	var div = d3.select("#vis");
@@ -73,7 +74,7 @@ function generateSunburst() {
 
 	var partition = d3.layout.partition()
 	    .sort(null)
-	    .value(function(d) { return 5.8 - d.depth; })
+	    .value(function(d) { return d.score; })
 	    .children(getChildren);
 
 	var nodes = partition.nodes({children: initialNodes});
@@ -157,10 +158,14 @@ function isParentOf(p, c) {
 }
 
 function colour(d) {
+	console.log("Colour", d);
+	var base = scale(d.index);
+	return d3.hsl(base).brighter(d.y);
+	console.log(base);
 	if (d.y == 0) {
 		return d3.hsl(0, 1.0, 1.0);
 	} else {
-		return d3.hsl(d.x * 360, 1.0 - d.y, d.y);
+		
 	}
 	console.log(d.x, d.y);
 	if (d.children) {
