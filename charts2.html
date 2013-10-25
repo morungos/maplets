@@ -16,9 +16,10 @@
 
 	<script>
 buildHierarchy("mapped_gra_small.txt", function(data) {
+	var chart = hierarchyChart().width(500).height(500);
 	d3.select("#vis")
 	  .datum(data)
-	  .call(hierarchyChart());
+	  .call(chart);
 })
 	</script>
 
