@@ -63,7 +63,8 @@ function buildHierarchy(filename, callback) {
     root.level = "ROOT";
     ranks.unshift("ROOT");
 
-    callback(ranked(root, 0, ranks));
+    var rankedRoot = ranked(root, 0, ranks);
+    callback(rankedRoot);
   }
 
   // Now, we really should introduce some placeholders, but this can probably omit 
@@ -84,6 +85,21 @@ function hierarchyChart() {
       height = 400,
       duration = 1000;
 
+  function annotate(node, parent, context, left) {
+    var percentage = (100 * node.value).toFixed(1) + "%";
+    node.percentage = percentage;
+    node.context = context;
+    var right = left + 1;
+    if (node.children) {
+      node.children.forEach(function(child, i) {
+        right = annotate(child, node, (context) ? (context + "." + i.toString()) : i.toString(), right) + 1;
+      })
+    }
+    node.left = left;
+    node.right = right;
+    return right;
+  }
+
   function chart(selection) {
     selection.each(function(data) {
 
@@ -93,6 +109,9 @@ function hierarchyChart() {
           .children(function(d) { return d.children || []; });
 
       var nodes = partition.nodes(data);
+      annotate(nodes[0], nodes[0], "", 0);
+
+      var rootNode = nodes[0];
 
       var arc = d3.svg.arc()
         .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
@@ -113,47 +132,74 @@ function hierarchyChart() {
         .append("g")
         .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
 
-      var path = svg.selectAll("path").data(nodes);
+      var path = svg.selectAll("path.background").data(nodes);
       path.enter().append("path")
+        .attr("class", "background")
         .attr("id", function(d, i) { return "path-" + i; })
         .attr("d", arc)
         .style("fill", colour)
         .on("click", click);
 
-      var text = svg.selectAll("text").data(nodes);
-      var textEnter = text.enter().append("text")
-        .style("fill-opacity", 1)
-        .style("fill", function(d) {
-          return brightness(d3.rgb(colour(d))) < 125 ? "#eee" : "#000";
-        })
-        .attr("text-anchor", function(d) {
-          return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
-        })
-        .attr("dy", ".2em")
-        .attr("transform", function(d) {
-          var multiline = (d.name || "").split(" ").length > 1,
-              angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
-              rotate = angle + (multiline ? -.5 : 0);
-          return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
-        })
-      textEnter.append("tspan")
-        .attr("x", 0)
-        .text(function(d) { return d.name; });
+      var labels = svg.selectAll("text").data(nodes);
+      var labelsEnter = labels.enter()
+        .append("text")
+        .style("visibility", function(d) { return (visibleLabel(rootNode, d) ? "visible" : "hidden"); })
+        .style("font-size", "12px")
+        .style("fill", "black")
+        .attr("dx", "5px")
+        .attr("dy", "20px")
+        .attr("text-anchor", "middle")
+        .append("textPath")
+        .attr("xlink:href", function(d, i) { return "#path-" + i; })
+        .attr("startOffset", "25%")
+        .text(textLabel)
+        .on("click", click);
 
+      var overlayPath = svg.selectAll("path.hierarchyLabel").data(nodes);
+      overlayPath.enter().append("path")
+        .attr("class", tooltipClass)
+        .attr("id", function(d, i) { return "npath-" + i; })
+        .attr("d", arc)
+        .style("fill", "rgba(255, 255, 255, 0.0)")
+        .attr("data-tooltip", textLabel)
+        .on("click", click);
 
       // Colour handling really would be better by mapping colours recursively. We want a
       // colour for the top-level nodes, and can then use gradations at lower levels. This
       // is probably better coded into the nodes. The down-side is that small gradations can
       // be hard to see. 
 
+      function visible(d) {
+        return ! (d.level == "ROOT" || d.placeholder);
+      }
+
+      function visibleLabel(d, e) {
+        return ! (e.level == "ROOT" || e.placeholder || (e.value < (d.value / 20)));
+      }
+
+      function tooltipClass(d) {
+        if (visible(d)) {
+          return "hierarchyLabel";
+        } else {
+          return "invisibleLabel";
+        }
+      }
+
+      function textLabel(d) {
+        return d.level + ": " + d.name;
+      }
+
       function colour(d) {
         if (d.placeholder) {
           return "white";
-        } else if (! d.index) {
+        } else if (d.context == "") {
           return "red";
         } else {
-          var index = parseInt(d.index) || 1;
-          var base = scale(index);
+          var category = parseInt(d.context);
+          var base = scale(category);
+
+          // var index = parseInt(d.index) || 1;
+          // var base = scale(index);
           return d3.hsl(base).brighter(d.y);
         }
       }
@@ -163,32 +209,22 @@ function hierarchyChart() {
       }
 
       function click(d) {
+        jQuery('.hierarchyLabel').qtip('hide');
         path
           .transition()
           .duration(duration)
           .attrTween("d", arcTween(d));
-        text.style("visibility", function(e) {
-          return isParentOf(d, e) ? null : d3.select(this).style("visibility");
-          })
+        overlayPath
           .transition()
           .duration(duration)
-          .attrTween("text-anchor", function(d) {
-            return function() {
-              return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
-            };
-          })
-          .attrTween("transform", function(d) {
-            var multiline = (d.name || "").split(" ").length > 1;
-            return function() {
-              var angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
-                  rotate = angle + (multiline ? -.5 : 0);
-              return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
-            };
-          })
-          .style("fill-opacity", function(e) { return isParentOf(d, e) ? 1 : 1e-6; })
-          .each("end", function(e) {
-            d3.select(this).style("visibility", isParentOf(d, e) ? null : "hidden");
+          .attrTween("d", arcTween(d));
+        labels.style("visibility", function(e) {
+          return (visibleLabel(d, e) && isParentOf(d, e)) ? "visible" : "hidden";
           });
+        setTimeout(function() {
+          jQuery('.hierarchyLabel').qtip('reposition');
+        }, duration + 50);
+        
       }
 
       function arcTween(d) {
@@ -206,7 +242,6 @@ function hierarchyChart() {
       }
 
       function isParentOf(p, c) {
-        // console.log("isParentOf", p, c);
         if (p === c) return true;
         if (p.children) {
           return p.children.some(function(d) {
@@ -228,7 +263,9 @@ function hierarchyChart() {
       // svg.attr("width", width)
       //    .attr("height", height);
 
-
+      jQuery('.hierarchyLabel').qtip({
+        content:{attr: 'data-tooltip'}, 
+        position: {target: 'mouse', adjust: {mouse: true, x: 5, y: 0}}});
     });
   }
 

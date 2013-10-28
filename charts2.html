@@ -1,18 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="css/jquery.qtip.min.css" rel="stylesheet" media="screen">
+
 	<title>Genome Maps</title>
 
-    <script src="js/d3.v3.js" charset="utf-8"></script>
-    <script src="hierarchy.js" charset="utf-8"></script>
 
-
+    <style>
+.hierarchyLabel {
+	cursor: default;
+}
+    </style>
 </head>
 <body>
 
 <div id="vis"></div>
+
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/jquery.qtip.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+    <script src="js/d3.v3.js" charset="utf-8"></script>
+    <script src="hierarchy.js" charset="utf-8"></script>
 
 	<script>
 buildHierarchy("mapped_gra_small.txt", function(data) {
@@ -23,5 +35,7 @@ buildHierarchy("mapped_gra_small.txt", function(data) {
 })
 	</script>
 
+
+<div id="tooltip-container"></div>
 </body>
 </html>
